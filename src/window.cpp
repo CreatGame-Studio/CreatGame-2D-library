@@ -15,6 +15,9 @@
 
 
 void *cg2::Window::_window {NULL}, *cg2::Window::_renderer {NULL};
+unsigned long long cg2::Window::_startTick {0}, cg2::Window::_endTick {0};
+cg2::FRect cg2::Window::_viewportRect {0.0f, 0.0f, 0.0f, 0.0f};
+bool cg2::Window::_isFullScreen {false};
 
 
 
@@ -39,9 +42,114 @@ void cg2::Window::destroy()
 
 
 
+void cg2::Window::enableResizing(bool enable)
+{
+	SDL_SetWindowResizable(window, (SDL_bool)enable);
+}
+
+
+
+void cg2::Window::setMaxSize(int w, int h)
+{
+	SDL_SetWindowMaximumSize(window, w, h);
+}
+
+
+
+void cg2::Window::setMinSize(int w, int h)
+{
+	SDL_SetWindowMinimumSize(window, w, h);
+}
+
+
+
+void cg2::Window::setViewportSize(int w, int h)
+{
+	if (SDL_RenderSetLogicalSize(renderer, w, h) != 0)
+		throw Error(cg2::ErrorCode::WINDOW_CREATE, "Can't change viewport size");
+	_viewportRect = {0.0f, 0.0f, (float)w, (float)h};
+}
+
+
+
+void cg2::Window::setFullScreen(bool enable)
+{
+	if (enable)
+	{
+		if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0)
+			throw Error(cg2::ErrorCode::WINDOW_CREATE, "Can't enable full screen");
+	}
+
+	else
+	{
+		if (SDL_SetWindowFullscreen(window, 0) != 0)
+			throw Error(cg2::ErrorCode::WINDOW_CREATE, "Can't disable full screen");
+	}
+
+	_isFullScreen = enable;
+}
+
+
+
+bool cg2::Window::isFullScreen()
+{
+	return _isFullScreen;
+}
+
+
+
+cg2::FRect cg2::Window::getViewportRect()
+{
+	return _viewportRect;
+}
+
+
+
+int cg2::Window::capFramerate(int framerate)
+{
+	_endTick = SDL_GetTicks64();
+	int dt = _endTick - _startTick;
+
+	if (dt < 1000 / framerate)
+	{
+		SDL_Delay(1000 / framerate - dt);
+		_startTick = SDL_GetTicks64();
+		return 1000 / framerate;
+	}
+
+	_startTick = SDL_GetTicks64();
+	return framerate;
+}
+
+
+
 void cg2::Window::update()
 {
 	SDL_RenderPresent(renderer);
+}
+
+
+
+void cg2::Window::setCurrentDrawColor(const cg2::Color &color)
+{
+	if (SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a) != 0)
+		throw Error(cg2::ErrorCode::DRAWING, "Can't change draw color");
+}
+
+
+
+void cg2::Window::clear(const cg2::Color &color)
+{
+	cg2::Window::setCurrentDrawColor(color);
+	if (SDL_RenderClear(renderer) != 0)
+		throw Error(cg2::ErrorCode::DRAWING, "Can't clear renderer");
+}
+
+
+
+void cg2::Window::draw(const cg2::Drawable &drawable)
+{
+	drawable.draw(_renderer);
 }
 
 

@@ -12,7 +12,8 @@ namespace cg2
 	enum ErrorCode
 	{
 		INIT,
-		WINDOW_CREATE
+		WINDOW_CREATE,
+		DRAWING
 	};
 
 	/**
