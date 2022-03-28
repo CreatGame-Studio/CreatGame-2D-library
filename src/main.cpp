@@ -3,6 +3,8 @@
 #include <SDL2/SDL.h>
 
 #include "error.hpp"
+#include "event.hpp"
+#include "image.hpp"
 #include "init.hpp"
 #include "window.hpp"
 
@@ -18,27 +20,22 @@ int main(int argc, char *argv[])
 		cg2::Window::setMinSize(16 * 70, 9 * 70);
 		cg2::Window::setViewportSize(16 * 70, 9 * 70);
 
-		bool running = true;
-		SDL_Event event = {};
+		cg2::Image image {"res/logo1024.png"};
+		image.setInnerRect({256, 256, 512, 512});
+		image.setPos(100, 200);
+		image.setScaleFactor(0.5f);
+
 		cg2::Rect rect1 {10, 20, 30, 40};
 		cg2::FRect rect2 {30.0f, 50.0f, 60.5f, 10.0f};
 		rect2.flag = cg2::RectDrawingFlags::FILL;
 		/*int dt = 0;*/
 
-		while (running)
+		while (cg2::Event::isRunning())
 		{
-			while (SDL_PollEvent(&event))
-			{
-				switch (event.type)
-				{
-					case SDL_QUIT:
-						running = false;
-						break;
-					
-					default:
-						break;
-				}
-			}
+			cg2::Event::update();
+
+			image.move(2.0f / 16.0f, 2.0f / 16.0f);
+
 
 			cg2::Window::clear();
 
@@ -51,10 +48,12 @@ int main(int argc, char *argv[])
 			cg2::Window::setCurrentDrawColor({255, 0, 0, 255});
 			cg2::Window::draw(cg2::Window::getViewportRect());
 
+			cg2::Window::draw(image);
+
 			cg2::Window::update();
 
 
-			/*dt = */cg2::Window::capFramerate(60);
+			cg2::Window::capFramerate(60);
 		}
 	}
 

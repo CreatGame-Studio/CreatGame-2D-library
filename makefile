@@ -1,6 +1,6 @@
 EXEC = prog.exe
 CXX = g++
-CXX_FLAGS = -I include -Wall -Wextra -pedantic -Wno-unused-parameter -Werror -c
+CXX_FLAGS = -I include -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-write-strings -Werror -c
 LD_FLAGS = -L lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 SRC1 = $(wildcard src/*.cpp)

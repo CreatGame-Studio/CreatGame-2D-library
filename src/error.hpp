@@ -13,7 +13,8 @@ namespace cg2
 	{
 		INIT,
 		WINDOW_CREATE,
-		DRAWING
+		DRAWING,
+		IMAGE_CREATION
 	};
 
 	/**

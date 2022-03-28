@@ -18,6 +18,7 @@ void *cg2::Window::_window {NULL}, *cg2::Window::_renderer {NULL};
 unsigned long long cg2::Window::_startTick {0}, cg2::Window::_endTick {0};
 cg2::FRect cg2::Window::_viewportRect {0.0f, 0.0f, 0.0f, 0.0f};
 bool cg2::Window::_isFullScreen {false};
+int cg2::Window::_dt {0};
 
 
 
@@ -76,7 +77,7 @@ void cg2::Window::setFullScreen(bool enable)
 {
 	if (enable)
 	{
-		if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0)
+		if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0)
 			throw Error(cg2::ErrorCode::WINDOW_CREATE, "Can't enable full screen");
 	}
 
@@ -105,20 +106,20 @@ cg2::FRect cg2::Window::getViewportRect()
 
 
 
-int cg2::Window::capFramerate(int framerate)
+void cg2::Window::capFramerate(int framerate)
 {
 	_endTick = SDL_GetTicks64();
-	int dt = _endTick - _startTick;
+	_dt = _endTick - _startTick;
 
-	if (dt < 1000 / framerate)
+	if (_dt < 1000 / framerate)
 	{
-		SDL_Delay(1000 / framerate - dt);
+		SDL_Delay(1000 / framerate - _dt);
 		_startTick = SDL_GetTicks64();
-		return 1000 / framerate;
+		_dt = 1000 / framerate;
+		return;
 	}
 
 	_startTick = SDL_GetTicks64();
-	return framerate;
 }
 
 
@@ -167,3 +168,8 @@ void *cg2::Window::getRenderer()
 }
 
 
+
+float cg2::Window::getDT()
+{
+	return (float)_dt;
+}

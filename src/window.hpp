@@ -26,7 +26,7 @@ namespace cg2
 			static cg2::FRect getViewportRect();
 			static bool isFullScreen();
 
-			static int capFramerate(int framerate);
+			static void capFramerate(int framerate);
 			static void update();
 
 			static void setCurrentDrawColor(const Color &color);
@@ -35,12 +35,14 @@ namespace cg2
 
 			static void *getWindow();
 			static void *getRenderer();
+			static float getDT();
 
 		private:
 			static void *_window, *_renderer;
 			static unsigned long long _startTick, _endTick;
 			static cg2::FRect _viewportRect;
 			static bool _isFullScreen;
+			static int _dt;
 	};
 }
 
