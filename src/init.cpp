@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "error.hpp"
 #include "init.hpp"
@@ -24,13 +25,17 @@ void cg2::init(cg2::SubSystem subSystem)
 	}
 
 
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	if (SDL_Init(sdlFlags) != 0)
 		throw cg2::Error(cg2::INIT, "Can't init SDL2");
+
+	if (TTF_Init() != 0)
+		throw cg2::Error(cg2::ErrorCode::INIT, "Can't init SDL_ttf");
 }
 
 
 
 void cg2::quit()
 {
+	TTF_Quit();
 	SDL_Quit();
 }

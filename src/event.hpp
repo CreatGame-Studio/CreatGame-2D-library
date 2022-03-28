@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include "point.hpp"
+#include "types.hpp"
 
 /*************************************************
 * \author Ayrton Lachat

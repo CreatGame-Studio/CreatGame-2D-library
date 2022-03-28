@@ -6,6 +6,7 @@
 #include "event.hpp"
 #include "image.hpp"
 #include "init.hpp"
+#include "text.hpp"
 #include "window.hpp"
 
 
@@ -24,6 +25,10 @@ int main(int argc, char *argv[])
 		image.setInnerRect({256, 256, 512, 512});
 		image.setPos(100, 200);
 		image.setScaleFactor(0.5f);
+
+		cg2::Font font {"res/arial.ttf", 40};
+
+		cg2::Text text {font.getFont(), "Hello World !", {255, 150, 0, 255}};
 
 		cg2::Rect rect1 {10, 20, 30, 40};
 		cg2::FRect rect2 {30.0f, 50.0f, 60.5f, 10.0f};
@@ -49,6 +54,7 @@ int main(int argc, char *argv[])
 			cg2::Window::draw(cg2::Window::getViewportRect());
 
 			cg2::Window::draw(image);
+			cg2::Window::draw(text);
 
 			cg2::Window::update();
 

@@ -14,7 +14,8 @@ namespace cg2
 		INIT,
 		WINDOW_CREATE,
 		DRAWING,
-		IMAGE_CREATION
+		IMAGE_CREATION,
+		TEXT_FONT
 	};
 
 	/**
