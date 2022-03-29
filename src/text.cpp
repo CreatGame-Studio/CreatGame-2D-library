@@ -71,7 +71,7 @@ cg2::Text::Text() : _rect {}, _factor {1.0f}, _text {NULL}, _font {NULL}, _textu
 
 
 
-cg2::Text::Text(void *font, const char *text, cg2::Color color)
+cg2::Text::Text(void *font, const char *text, cg2::Color color) : _rect {}, _factor {1.0f}, _text {NULL}, _font {NULL}, _texture {NULL}, _color {}
 {
 	this->load(font, text, color);
 }
@@ -174,8 +174,6 @@ void cg2::Text::draw(void *renderer) const
 
 void cg2::Text::load(void *font, const char *text, cg2::Color color)
 {
-	printf("1\n");
-
 	_font = font;
 	_color = color;
 
@@ -185,28 +183,19 @@ void cg2::Text::load(void *font, const char *text, cg2::Color color)
 		_text = NULL;
 	}
 
-	printf("2\n");
 
 	_text = (char*)malloc(strlen(text) + 1);
 	if (_text == NULL)
 		throw cg2::Error(cg2::ErrorCode::TEXT_FONT, "Can't alloc memory for text");
 
-	printf("3\n");
-
 	strcpy(_text, text);
-
-	printf("4\n");
 
 	if (_texture != NULL)
 		this->unload();
 
-	printf("5\n");
-
 	SDL_Surface *surface = TTF_RenderUTF8_Solid((TTF_Font*)_font, _text, {_color.r, _color.g, _color.b, _color.a});
 	if (surface == NULL)
 		throw cg2::Error(cg2::ErrorCode::TEXT_FONT, "Can't create text");
-
-	printf("6\n");
 
 	_texture = SDL_CreateTextureFromSurface((SDL_Renderer*)cg2::Window::getRenderer(), surface);
 
@@ -214,8 +203,6 @@ void cg2::Text::load(void *font, const char *text, cg2::Color color)
 	_rect.h = (float)surface->h;
 
 	SDL_FreeSurface(surface);
-
-	printf("7\n");
 
 	if (_texture == NULL)
 		throw cg2::Error(cg2::ErrorCode::TEXT_FONT, "Can't convert surface to texture");
@@ -225,9 +212,7 @@ void cg2::Text::load(void *font, const char *text, cg2::Color color)
 
 void cg2::Text::unload()
 {
-	printf("4.1\n");
 	SDL_DestroyTexture((SDL_Texture*)_texture);
-	printf("4.2\n");
 }
 
 

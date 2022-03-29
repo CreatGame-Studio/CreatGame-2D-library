@@ -10,6 +10,9 @@ OBJ1 = ${SRC1:.cpp=.o}
 OBJ2 = ${SRC2:.cpp=.o}
 
 
+rm : 
+	del src\*.o
+
 all : $(EXEC)
 
 $(EXEC) : $(OBJ1) $(OBJ2)

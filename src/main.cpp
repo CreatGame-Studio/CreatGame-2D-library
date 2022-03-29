@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "physics/collision.hpp"
 #include "error.hpp"
 #include "event.hpp"
 #include "image.hpp"
@@ -32,8 +33,11 @@ int main(int argc, char *argv[])
 
 		cg2::Rect rect1 {10, 20, 30, 40};
 		cg2::FRect rect2 {30.0f, 50.0f, 60.5f, 10.0f};
-		rect2.flag = cg2::RectDrawingFlags::FILL;
-		/*int dt = 0;*/
+		rect2.flag = cg2::DrawingFlags::FILL;
+
+		cg2::FCircle circle1 {302.1f, 403.5f, 99.78f};
+		circle1.flag = cg2::DrawingFlags::FILL;
+
 
 		while (cg2::Event::isRunning())
 		{
@@ -55,6 +59,9 @@ int main(int argc, char *argv[])
 
 			cg2::Window::draw(image);
 			cg2::Window::draw(text);
+
+			cg2::Window::setCurrentDrawColor({255, 255, 255, 255});
+			cg2::Window::draw(circle1);
 
 			cg2::Window::update();
 

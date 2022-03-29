@@ -1,6 +1,8 @@
 #if !defined(__CG2_DRAWABLE_HPP__)
 #define __CG2_DRAWABLE_HPP__
 
+#include <cstdint>
+
 /*************************************************
 * \author Ayrton Lachat
 * \file cg2/drawable.hpp
@@ -22,7 +24,7 @@ namespace cg2
 	};
 
 
-	enum RectDrawingFlags
+	enum DrawingFlags
 	{
 		FILL, BORDER
 	};
@@ -37,7 +39,7 @@ namespace cg2
 			virtual void draw(void *renderer) const;
 
 			int x, y, w, h;
-			RectDrawingFlags flag;
+			DrawingFlags flag;
 	};
 
 
@@ -50,7 +52,31 @@ namespace cg2
 			virtual void draw(void *renderer) const;
 
 			float x, y, w, h;
-			RectDrawingFlags flag;
+			DrawingFlags flag;
+	};
+
+
+	class Circle : public Drawable
+	{
+		public:
+			Circle();
+			Circle(int _x, int _y, int _r);
+
+			virtual void draw(void *renderer) const;
+			int x, y, r;
+			DrawingFlags flag;
+	};
+
+
+	class FCircle : public Drawable
+	{
+		public:
+			FCircle();
+			FCircle(float _x, float _y, float _r);
+
+			virtual void draw(void *renderer) const;
+			float x, y, r;
+			DrawingFlags flag;
 	};
 }
 
